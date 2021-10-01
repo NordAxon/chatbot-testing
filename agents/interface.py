@@ -11,12 +11,12 @@ from environment.conversation import Dialog, Message
 class AbstractAgent(abc.ABC): 
     """Abstract base class that defines interface for an agent """
 
-    def __init__(self, agent_nr:str, starts:bool):
-        if agent_nr not in valid_agents:
-            raise ValueError(f'agent_nr must be on in {valid_agents}')
+    def __init__(self, agent_id:str, starts:bool):
+        if agent_id not in valid_agents:
+            raise ValueError(f'agent_id must be on in {valid_agents}')
 
-        self.agent_nr = agent_nr
-        self.dialog = Dialog(agent_nr)
+        self.agent_id = agent_id
+        self.dialog = Dialog(agent_id)
         self.ready_to_act = starts == True
 
 
@@ -27,7 +27,7 @@ class AbstractAgent(abc.ABC):
 
     def observe(self, message: Message):
         " Add a message from another agent to the dialog"
-        assert not message.belongs_to(self.agent_nr)
+        assert not message.belongs_to(self.agent_id)
 
         #TODO: Add to dialog
         self.ready_to_act = True

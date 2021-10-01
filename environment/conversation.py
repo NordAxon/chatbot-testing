@@ -8,16 +8,16 @@ from typing import List
 class Message:
     
 
-    def __init__(self, text:str, agent_nr:str):
-        if agent_nr not in valid_agents:
-            raise ValueError(f'agent_nr must be on in {valid_agents}')
+    def __init__(self, text:str, agent_id:str):
+        if agent_id not in valid_agents:
+            raise ValueError(f'agent_id must be on in {valid_agents}')
 
-        self.agent_nr = agent_nr
+        self.agent_id = agent_id
         self.message = text
 
 
-    def belongs_to(self, agent_nr):
-        return agent_nr == self.agent_nr
+    def belongs_to(self, agent_id):
+        return agent_id == self.agent_id
 
 
 class Dialog:

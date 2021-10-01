@@ -1,8 +1,12 @@
+import sys
+# Used to import sibling modules
+sys.path.append("..")
+
 import abc
 from typing import List, Dict
 from config import valid_agents
-from conversation import Dialog, Message
-from agents import AbstractAgent
+from environment.conversation import Dialog, Message
+from agents.interface import AbstractAgent
 
 class TestWorld(abc.ABC):
 

@@ -1,3 +1,7 @@
+import sys
+# Used to import sibling modules
+sys.path.append("..")
+
 from config import valid_agents
 from typing import List
 

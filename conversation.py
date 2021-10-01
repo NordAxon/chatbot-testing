@@ -26,8 +26,7 @@ class Dialog:
         if who_starts not in valid_agents:
             raise ValueError(f'who_starts must be on in {valid_agents}')
 
-        self.whos_turn = who_starts # test_agent or 
- or agent2
+        self.whos_turn = who_starts # test_agent or helper_agent
 
     
     def get_message_list(self) -> List[str]:
@@ -48,12 +47,10 @@ class Dialog:
 
     def _switch_expected_turn(self):
         "Switches agent expected to act"
-        if self.whos_turn == 'test_agent
-':
-            self.whos_turn = 'agent2'
+        if self.whos_turn == 'test_agent':
+            self.whos_turn = 'helper_agent'
         else:
-            self.whos_turn = 'test_agent
-    '
+            self.whos_turn = 'test_agent'
 
 
     def __len__(self):

@@ -13,9 +13,9 @@ class AbstractTestCase(abc.ABC):
     """
     
 
-    def __init__(self, test_agent: AbstractAgent, other_agent: AbstractAgent):
+    def __init__(self, test_agent: AbstractAgent, helper_agent: AbstractAgent):
         self.test_agent = test_agent
-        self.other_agent = other_agent
+        self.helper_agent = helper_agent
         self.dialog = Dialog
         self.report = None
 

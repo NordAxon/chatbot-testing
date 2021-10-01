@@ -7,12 +7,12 @@ from agents import AbstractAgent
 class TestWorld(abc.ABC):
 
 
-    def __init__(self, test_agent: AbstractAgent, other_agent: AbstractAgent):
+    def __init__(self, test_agent: AbstractAgent, helper_agent: AbstractAgent):
         """ Object used to keep track of agents, dialogs and tests
 
         Args:
             test_agent (AbstractAgent): test_agent
-            other_agent (AbstractAgent): other_agent
+            helper_agent (AbstractAgent): helper_agent
         """
         self.report 
         self.dialogs = []

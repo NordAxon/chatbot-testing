@@ -1,1 +1,1 @@
-valid_agents = ('agent1', 'agent2')
+valid_agents = ('test_agent', 'other_agent')

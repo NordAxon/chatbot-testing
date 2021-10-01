@@ -20,13 +20,14 @@ class Dialog:
     """Simple dialog object for keeping track of a dialog """
 
 
-    def __init__(self, who_starts='agent1'):
+    def __init__(self, who_starts='test_agent'):
         self.messages = []  # List of messages
 
         if who_starts not in valid_agents:
             raise ValueError(f'who_starts must be on in {valid_agents}')
 
-        self.whos_turn = who_starts # agent1 or agent2
+        self.whos_turn = who_starts # test_agent or 
+ or agent2
 
     
     def get_message_list(self) -> List[str]:
@@ -47,10 +48,12 @@ class Dialog:
 
     def _switch_expected_turn(self):
         "Switches agent expected to act"
-        if self.whos_turn == 'agent1':
+        if self.whos_turn == 'test_agent
+':
             self.whos_turn = 'agent2'
         else:
-            self.whos_turn = 'agent1'
+            self.whos_turn = 'test_agent
+    '
 
 
     def __len__(self):

@@ -17,28 +17,51 @@ class AbstractTestCase(abc.ABC):
     """
     
 
-    def __init__(self, test_agent: AbstractAgent, helper_agent: AbstractAgent):
+    def __init__(self, 
+        test_agent: AbstractAgent, 
+        helper_agent: AbstractAgent, 
+        nbr_dialogs: int
+        ):
+
         self.test_agent = test_agent
         self.helper_agent = helper_agent
-        self.dialog = Dialog
-        self.report = None
+        self.nbr_dialogs = nbr_dialogs
+
+        self.dialogs = []
 
 
-    def get_dialog(self):
-        return self.dialog.get_dialog()
+    def get_dialogs(self):
+        "Returns a list of dialogs"
+        return self.dialogs
+
+    
+    def run_all(self) -> List[Dict]:
+        """Runs self.nbr_dialogs tests and analyses them in order
+
+        Returns:
+            List[Dict]: metrics as a list of dicts
+        """
+        for _ in range(self.nbr_dialogs):
+            dialog = self.create_dialog()
+            self.dialogs.append(dialog)
+
+        for dialog in self.dialogs:
+            self.analyse(dialog)
+            
+        return self.dialogs
 
 
-    @abc.abstractmethod
-    def run(self) -> Dialog:
+    @abc.Abstractmethod
+    def create_dialog(self) -> Dialog:
         "Runs testcase"
         pass
 
 
-    @abc.abstractmethod
-    def analyse(self) -> Dict:
-        "Performs analysis of outcome"
+    @abc.Abstractmethod
+    def analyse(self, dialog: Dialog):
+        """Performs analysis of outcome. 
+        It should add the analysis metrics to the dialog by using dialog.add_metrics()"""
         pass
-
 
 
 class AbstractDialogTest(abc.ABC):
@@ -48,19 +71,36 @@ class AbstractDialogTest(abc.ABC):
     """
 
 
-    @abc.abstractmethod
+    @abc.Abstractmethod
     def __init__(self):
         pass
 
 
-    @abc.abstractmethod
-    def analyse(self, dialog: Dialog) -> Dict:
+    def analyse_batch(self, dialogs: List[Dialog]) -> List[Dict]:
         """Analyses the dialog
 
         Args:
-            dialog (Dialog): Dialog to analyse
+            dialogs (List[Dialog]): List of dialog to analyse
 
         Returns:
-            Dict: Dictionary with metrics produced by test
+            List[Dict]: List of dictionaries with metrics produced by test
+        """
+
+        for dialog in dialogs:
+            metrics = self.analyse(dialog)
+            dialog.update(metrics)
+        
+        return dialogs
+
+
+    @abc.Abstractmethod
+    def analyse(dialog: Dialog) -> Dict:
+        """Analyses one dialog
+
+        Args:
+            dialog (Dialog): dialog to analyse
+
+        Returns:
+            Dict: dictonary with metrics from test
         """
         pass

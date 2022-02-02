@@ -3,7 +3,8 @@ import sys
 sys.path.append("..")
 
 from config import valid_agents
-from typing import List
+from typing import List, Dict
+import warnings
 
 class Message:
     
@@ -13,7 +14,7 @@ class Message:
             raise ValueError(f'agent_id must be on in {valid_agents}')
 
         self.agent_id = agent_id
-        self.message = text
+        self.text = text
 
 
     def belongs_to(self, agent_id):
@@ -24,13 +25,21 @@ class Dialog:
     """Simple dialog object for keeping track of a dialog """
 
 
-    def __init__(self, who_starts='test_agent'):
-        self.messages = []  # List of messages
-
+    def __init__(self,
+        label:str,
+        who_starts: str = 'test_agent'
+        ):
+        
         if who_starts not in valid_agents:
             raise ValueError(f'who_starts must be on in {valid_agents}')
 
-        self.whos_turn = who_starts # test_agent or helper_agent
+        self.messages = []  # List of messages
+        self.label = label
+
+        self.who_starts = who_starts # test_agent or helper_agent
+        self.whos_turn = who_starts 
+
+        self.metrics = {}
 
     
     def get_message_list(self) -> List[str]:
@@ -59,4 +68,14 @@ class Dialog:
 
     def __len__(self):
         return len(self.messages)
-    
+        
+
+    def add_metrics(self, metrics: Dict):
+        "Adds metrics to self.metrics"
+
+        old_keys = self.metrics.keys()
+        if any([new_key in old_keys for new_key in metrics.keys()]):
+            warnings.warn('Found identical keys in metrics')
+            raise NotImplementedError("Implement something that handles this case") #TODO
+        else:
+            self.metrics.update(metrics)

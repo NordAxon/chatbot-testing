@@ -11,38 +11,37 @@ from environment.conversation import Dialog, Message
 class AbstractAgent(abc.ABC): 
     """Abstract base class that defines interface for an agent """
 
-    def __init__(self, agent_id:str, starts:bool):
+    def __init__(self, agent_id:str):
         if agent_id not in valid_agents:
             raise ValueError(f'agent_id must be on in {valid_agents}')
 
         self.agent_id = agent_id
-        self.dialog = Dialog(agent_id)
-        self.ready_to_act = starts == True
 
 
     @abc.abstractmethod
     def initialize(self):
         "Start local server or otherwise initialize the agent so it's ready for testing"
+        pass
     
-
-    def observe(self, message: Message):
-        " Add a message from another agent to the dialog"
-        assert not message.belongs_to(self.agent_id)
-
-        #TODO: Add to dialog
-        self.ready_to_act = True
-        
-
-
-    def self_observe(self):
-        " Add its own message to the dialog. Should be called at the end of self.act() "
-        #TODO: Assert right turn
-        #TODO: Add to dialog
-
-        self.ready_to_act = False
         
 
     @abc.abstractmethod
-    def act(self) -> Message:
+    def _act(self, dialog) -> Message:
         " Define how to get a reply from the agent"
         pass
+
+
+    def reply(self, dialog) -> Message:
+        """Helper
+
+        Args:
+            dialog ([type]): [description]
+
+        Returns:
+            Message: [description]
+        """
+
+        assert dialog.whose_turn == self.agent_id
+        return self._act(dialog)
+
+
